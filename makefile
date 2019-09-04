@@ -1,10 +1,24 @@
-CC=gcc
-CFLAGS=-I.
-DEPS = intial.h
-OBJ = myshell.o intial.o 
 
-%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+shellcompile: myshell.o  intial.o new.o
+	gcc -o shellcompile myshell.o intial.o new.o
 
-shellcompile: $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+intial.o: intial.c intial.h	
+	gcc -c intial.c 
+
+new.o: new.cpp new.h
+	g++ -c new.cpp	
+
+myshell.o: myshell.c 
+	gcc -c myshell.c
+
+clean:
+	rm *.o shellcompile	
+
+
+
+
+
+
+
+
+
