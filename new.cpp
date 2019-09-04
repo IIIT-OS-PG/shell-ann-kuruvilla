@@ -13,6 +13,8 @@ using namespace std;
 	
 vector<string> split_word(string s)
 {
+	string st ="<<";
+	st+='\0';
 	vector<string> wrds;
 	int i,l;
 	l=s.size();
@@ -27,6 +29,8 @@ vector<string> split_word(string s)
 		 {
 		 	wrd+='\0';
 		 	wrds.push_back(wrd);
+		 	if(wrd==st)
+		 		cout<<"same";
 		 	wrd="";
 
 		 }
@@ -35,6 +39,7 @@ vector<string> split_word(string s)
 	}
 	wrd+='\0';
 	//cout<<wrd<<"hi"<<endl;
+
 	wrds.push_back(wrd);
 
 	

@@ -3,6 +3,7 @@
 #include<fcntl.h>
 #include<unistd.h>
 #include<bits/stdc++.h>
+#include<sys/wait.h> 
 
 using namespace std;
 
@@ -10,10 +11,14 @@ int main()
 {
 	char* arg[5];
 	int i;
+	pid_t pid,r;
 	/*string s="wj";
 	arg[0]=(char*)s.c_str();
 	
 	cout<<arg[0]<<endl;*/
+	pid =fork();
+	if(pid==0)
+	{
 	vector<string> v;
 	v.push_back("ls");
 	v.push_back("-l");
@@ -21,6 +26,8 @@ int main()
 	v.push_back("<<");
 	v.push_back("1.txt");
 	string st="<<";
+	
+	
 		if( find(v.begin(),v.end(),st) != v.end())
 		{
 			cout<<"helo"<<endl;
@@ -38,6 +45,15 @@ int main()
 			close(fd);
 			//exit(1);
 		}
+		else
+		{
+
+		}
+	}
+	else
+	{
+		r=wait(NULL);
+	}
 
 	//cout<<arg[1]<<endl;
 
