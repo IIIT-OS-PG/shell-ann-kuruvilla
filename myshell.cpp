@@ -9,6 +9,8 @@
 #include "intial.h"
 #include<fcntl.h>
 #include "new.h"
+#include "pipeimple.h"
+#include "make_background.h"
 
 using namespace std;
 
@@ -16,8 +18,15 @@ int main()
 {
 	start_shell();
 	pid_t pid,r,pr;
+	cout<<"WELCOME"<<endl;
 	//commandexec();
+	//pid_t myshell=getpid();
+	 //cout<<myshell<<endl;
+	 //pid_t myshellgrup=getpgid(myshell);
+	 //cout<<"shell grup id:"<<myshellgrup<<endl;
 
+	while(1)
+	{
 	pid =fork();
 	if(pid==0)
 	{
@@ -27,15 +36,17 @@ int main()
 		vector<string> v;
 		vector<string> v1;
 		char* arg[NOOFFLAGS];
-		/*char* arg1[4];
-		arg1[0]=(char*)"ls";
-		arg1[1]=(char*)"-l";
-		arg1[2]=(char*)"-a";
-		arg1[3]=NULL;*/
+		char* pth;
+		
 		char ch;
 		string user_input;
-		printf("enter command\n");
-		//fgets(user_input,MAXI,stdin);
+		string cd="cd";
+		cd+='\0';
+		string st2="|";
+		st2+='\0';
+		string st3="&";
+		st3+='\0';
+		
 		ch = cin.get();
 		while(ch!='\n')
 		{
@@ -52,16 +63,35 @@ int main()
 		  }
 		}
 
-		//cout<<user_input;
-		v=split_word(user_input);
 		
+		v=split_word(user_input);
+		/**********************MAKE TO BCKGRND****************/
+		if(find(v.begin(),v.end(),st3) !=v.end())
+			to_background(v);
 
-		string st="<<";
+		/**********************HANDLING CD********************/
+		else if(v[0]==cd)
+		{
+			char pathnam[1000];
+			pth = (char*)v[1].c_str();
+			int r=chdir(pth);
+			
+
+			printf("%s\n", getcwd(pathnam, 1000));
+			
+		}
+		/*********************PIPE COMMANDS********************************/
+		else if(find(v.begin(),v.end(),st2) != v.end())
+			pipeimpl(v);
+
+		else 
+		{
+			string st="<<";
 			st+='\0';
 		
 
-		if(find( v.begin(),v.end(),st) != v.end() )
-		{
+			if(find( v.begin(),v.end(),st) != v.end() )
+			{
 			
 			for(i=0;v[i]!=st;i++)
 			{
@@ -69,17 +99,19 @@ int main()
 				//cout<<arg[i]<<endl;
 			}
 			arg[i]=NULL;
-			char* filenm = (char*)v[i].c_str();
-			int fd=open("1.txt",O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+			//char *file
+			char* filenm = (char*)v[i+1].c_str();
+			int fd=open(filenm,O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
 			dup2(fd,1);
 			
 			execvp(arg[0],arg);
 			close(fd);
 			//exit(1);
-		}
-		else
-		{
-			cout<<"No redirection\n";
+			}
+			/********************************BASIC COMMANDS**************************************/
+			else
+			{
+			
 			
 			for( i=0;i<v.size();i++)
 			{
@@ -92,7 +124,9 @@ int main()
 			char* cmd= arg[0];
 			execvp(cmd,arg);
 			exit(1);
-	    }
+	    	}
+
+		}
 
 	}
 
@@ -100,12 +134,14 @@ int main()
 	{
 		
 		r =wait(NULL);
+
 	}
 
 	else
 	{
 		cout<<"error creating child\n";
 	}
+}
 
 
 	return 0;

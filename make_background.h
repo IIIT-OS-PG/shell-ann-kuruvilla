@@ -1,3 +1,4 @@
+#include<bits/stdc++.h>
 #include<cstring>
 #include<string>
 
@@ -5,9 +6,4 @@
 #define NOOFFLAGS 30
 #define WORDSIZE 50
 
- void start_shell(); //fn declaration
-
- 
- //void autocomplete(string s);
- void setmybashrc();
-
+void to_background(vector<string> );
