@@ -5,15 +5,14 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include<sys/wait.h> 
-#include"new.h"
+#include"splitwrd.h"
 
 using namespace std;
 /********************************FN FOR PIPED COMMANDS***************************/
 
 void pipeimpl(vector<string> ve)
 {
-	 // sets up 1st pipe
-	  //pipe(pipes + 2); // sets up 2nd pipe
+	 
 	pid_t p,r,sta;
 	string pi="|";
 	pi+='\0';
@@ -73,7 +72,7 @@ void pipeimpl(vector<string> ve)
  
 	  	dup2(pipes[0], 0); //read from read end of frst pipe
 	  	dup2(pipes[3],1); //write to write end of scnd pipe
-			  close(pipes[0]);
+		  close(pipes[0]);
 		  close(pipes[1]);
 		  close(pipes[2]);
 		  close(pipes[3]);
@@ -121,6 +120,8 @@ void pipeimpl(vector<string> ve)
 	string vi="ps aux | grep root | wc -l";
 	vector<string> v;
 	v=split_word(vi);
+	for(int i=0;i<v.size();i++)
+		cout<<v[i]<<endl;
 	pipeimpl(v);
 	return 0;
 

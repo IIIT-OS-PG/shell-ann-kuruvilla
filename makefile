@@ -1,18 +1,20 @@
 
-shellcompile: myshell.o  intial.o new.o pipeimple.o make_background.o
-	g++ -o shellcompile myshell.o intial.o new.o pipeimple.o make_background.o
+shellcompile: myshell.o  intial.o splitwrd.o pipedup.o make_background.o alarmset.o
+	g++ -o shellcompile myshell.o intial.o splitwrd.o pipedup.o make_background.o alarmset.o
 
 intial.o: intial.cpp intial.h
 	g++ -c intial.cpp 
 
-pipeimple.o: pipeimple.cpp pipeimple.h
-	g++ -c pipeimple.cpp
-new.o: new.cpp new.h
-	g++ -c new.cpp	
+pipedup.o: pipedup.cpp pipedup.h
+	g++ -c pipedup.cpp
+splitwrd.o: splitwrd.cpp splitwrd.h
+	g++ -c splitwrd.cpp	
 make_background.o:make_background.cpp make_background.h
 	g++ -c make_background.cpp	
+alarmset.o:alarmset.cpp alarmset.h
+	g++ -c alarmset.cpp	
 
-myshell.o: myshell.cpp intial.cpp new.cpp
+myshell.o: myshell.cpp intial.cpp splitwrd.cpp make_background.cpp
 	g++ -c myshell.cpp
 
 clean:

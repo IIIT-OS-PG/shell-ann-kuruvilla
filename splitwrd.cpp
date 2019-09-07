@@ -47,3 +47,16 @@ return wrds;
 	
 }
 
+/*int main()
+{
+	string vi;
+	cin>>vi;
+	cout<<vi<<"ip cmnd\n";
+	vector<string> v;
+	v=split_word(vi);
+	for(int i=0;i<v.size();i++)
+		cout<<v[i]<<endl;
+	//pipeimpl(v);
+	return 0;
+}*/
+

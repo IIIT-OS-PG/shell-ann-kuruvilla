@@ -3,14 +3,14 @@
 #include<stdio.h>
 #include<string>
 #include<unistd.h>
-#include<iostream>
 #include<sys/types.h>
 #include<sys/wait.h> 
 #include "intial.h"
 #include<fcntl.h>
-#include "new.h"
-#include "pipeimple.h"
+#include "splitwrd.h"
+#include "pipedup.h"
 #include "make_background.h"
+#include "alarmset.h"
 
 using namespace std;
 
@@ -18,8 +18,8 @@ int main()
 {
 	start_shell();
 	pid_t pid,r,pr;
-	cout<<"WELCOME"<<endl;
-	//commandexec();
+	//cout<<"WELCOME"<<endl;
+	
 	//pid_t myshell=getpid();
 	 //cout<<myshell<<endl;
 	 //pid_t myshellgrup=getpgid(myshell);
@@ -46,7 +46,12 @@ int main()
 		st2+='\0';
 		string st3="&";
 		st3+='\0';
-		
+		string st=">>";
+			st+='\0';
+		string st4=">";	
+			st4+='\0';
+		string st5="setalarm";	
+			st5+='\0';
 		ch = cin.get();
 		while(ch!='\n')
 		{
@@ -63,10 +68,17 @@ int main()
 		  }
 		}
 
+		if(user_input=="$$")
+		{
+			cout<<getppid();
+			exit(1);
+		}
 		
 		v=split_word(user_input);
+		if(find(v.begin(),v.end(),st5)!=v.end())
+			 setalarm(v);
 		/**********************MAKE TO BCKGRND****************/
-		if(find(v.begin(),v.end(),st3) !=v.end())
+		else if(find(v.begin(),v.end(),st3) !=v.end())
 			to_background(v);
 
 		/**********************HANDLING CD********************/
@@ -84,11 +96,10 @@ int main()
 		else if(find(v.begin(),v.end(),st2) != v.end())
 			pipeimpl(v);
 
+		/******************************O/P REDIRECTION >>**************************/
+
 		else 
 		{
-			string st="<<";
-			st+='\0';
-		
 
 			if(find( v.begin(),v.end(),st) != v.end() )
 			{
@@ -101,12 +112,28 @@ int main()
 			arg[i]=NULL;
 			//char *file
 			char* filenm = (char*)v[i+1].c_str();
-			int fd=open(filenm,O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+			int fd=open(filenm,O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR);
 			dup2(fd,1);
 			
 			execvp(arg[0],arg);
 			close(fd);
 			//exit(1);
+			}
+				/******************************oupt redirection >*****************/
+			else if(find(v.begin(),v.end(),st4)!=v.end())
+			{
+				for(i=0;v[i]!=st4;i++)
+				{
+				arg[i]=(char*)v[i].c_str();
+				//cout<<arg[i]<<endl;
+				}
+				arg[i]=NULL;
+				char* filenm = (char*)v[i+1].c_str();
+				int fd = open(filenm,O_RDWR | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR );
+				dup2(fd,1);// redirect op to file
+				execvp(arg[0],arg);
+				close(fd);
+				
 			}
 			/********************************BASIC COMMANDS**************************************/
 			else
