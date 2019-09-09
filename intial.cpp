@@ -14,7 +14,7 @@ using namespace std;
 
 void start_shell()
 {
-	//clear
+  //clear
   int fd1,re;
   char* fil;
   char nm[100];
@@ -26,8 +26,10 @@ void start_shell()
     printf("\n\n\n\t****MY SHELL****"); 
    // printf("\n\n\t-USE AT YOUR OWN RISK-"); 
     printf("\n\n\n\n**********************************************************************************************************\n\n"); 
-    /*******************************set .myrc file********************************************/
+    
     cout<<getenv("PS1")<<" "; // gets the value in currnt environmnt
+
+/*******************************set .myrc file********************************************/
 
     uid_t u=getuid();
     struct passwd *ps =getpwuid(u);

@@ -24,52 +24,19 @@ using namespace std;
 int main()
 {
 	//int 
+	//vector<string> an;
 	start_shell();
 	pid_t pid,r,pr;
-	int chidprocstatus;
-	//int back_flg=0;
-	// int    shmID;
- //     int    *shmPTR;
- //     shmID = shmget(IPC_PRIVATE, 2*sizeof(int), IPC_CREAT | 0666);
- //     if (shmID < 0) {
- //          printf(" shmget error \n");
- //          exit(1);
- //     }
- //     shmPTR = (int *) shmat(shmID, NULL, 0);
- //     if (shmPTR == (int*)-1) {
- //          printf(" shmat error \n");
- //          exit(1);
- //     }
- //     shmPTR[0]=0;
-	
-	//pid_t myshell=getpid();
-	 //cout<<myshell<<endl;
-	 //pid_t myshellgrup=getpgid(myshell);
-	 //cout<<"shell grup id:"<<myshellgrup<<endl;
+	int chidprocstatus,ree;
+	int back_flg;
+	int root_set=0;
+	//vector<string> an;
 
+	
 	while(1)
 	{
-	pid =fork();
-	if(pid==0)
-	{
-		//child process
-		int i,j,flag,k,re,root_set;
-		flag=0;
-		//back_flg=0;
-		root_set=0;
-		 ofstream fout;
-		 ifstream fin; 
-		 string lin;
-		 char line[1000];
-		vector<string> v;
-
-		vector<string> vt;
-		vector<string> v1;
-		char* arg[NOOFFLAGS];
-		char* arg1[NOOFFLAGS];
-		char* pth;
-	
-		char ch;
+		char ch,pr;
+		back_flg=0;
 		string user_input;
 		string cd="cd";
 		cd+='\0';
@@ -94,16 +61,83 @@ int main()
 		  if(ch!='\t')
 		  {
 		  	user_input+=ch;
+		  	pr =ch;
 		  	ch =cin.get();
 		  }
-		  else
-		  {
-		  	//autocomplete(user_input);
-		  	break;
-		  }
+		 
 		}
+		
+	if(pr=='&')
+	{
+		cout<<"bck flg set\n";
+		back_flg=1;
+		//pr=(char*)"";
+	}	
 
+	if( user_input=="su root")
+    {
+      ree=setenv("PS1","#",1);
+      //cout<<getenv("PS1");
+      //cout<<"setenv done\n";
+      root_set=1;
+      
+    }
+    if(user_input=="sudo su")
+    {
+    	ree=setenv("PS1","#",1);
+    }
+    if(user_input=="exit")
+    {
+      ree=setenv("PS1","$",1);
+      root_set=0;
+      
+    }
 
+    // if(user_input=="cd ..")
+		// {									/**************cd /home/user/Desktop**********************/
+
+			
+		// 	string homepath="";
+		// 	char pathnam[1000];
+		// 	if(v[1]==st7)
+		// 	{
+		// 		homepath ="/home/user";
+		// 		pth=(char*)homepath.c_str();
+
+		// 	}
+		// 	else
+		// 	{	
+		// 	 pth = (char*)v[1].c_str();
+		// 	 cout<<pth<<"pth set to\n";
+		// 	}
+		// 	int r=chdir(pth);
+		// 	if(r==-1)
+		// 		cout<<"ERR settng directry\n";
+		// 	printf("%s\n", getcwd(pathnam, 1000));
+		// 	exit(1);
+			
+		// }
+
+	pid =fork();
+	if(pid==0)
+	{
+		//child process
+		int i,j,flag,k,re;
+		flag=0;
+		
+		 ofstream fout;
+		 ifstream fin; 
+		 string lin;
+		 char line[1000];
+		vector<string> v;
+
+		vector<string> vt;
+		vector<string> v1;
+		char* arg[NOOFFLAGS];
+		char* arg1[NOOFFLAGS];
+		char* pth;
+	
+		
 		if(user_input=="$$")
 		{
 			cout<<getppid();
@@ -114,16 +148,11 @@ int main()
 			cout<<chidprocstatus<<"\n";
 			exit(1);
 		}
-		if( user_input=="su root")
-		{
-			re=setenv("PS1","#",1);
-			cout<<getenv("PS1");
-			root_set=1;
-			exit(1);
-		}
-		if(user_input=="exit" && root_set==1)
+		
+		if(user_input=="exit")
 		{
 			re=setenv("PS1","$",1);
+			root_set=0;
 			exit(1);
 		}
 		
@@ -137,32 +166,26 @@ int main()
 			fout.open("aliases.txt",ios::app);  /*------------CREATE aliases.txt frst**********/
 			 fout<<user_input<<endl;
 			fout.close(); 
-			// fin.open("aliases.txt");     
-			//  while (fin)
-			//  { 
-			//    getline(fin, lin);
-			//    lines.push_back(lin);
-			   
-			//   }
-			  // for(i=0;i<lines.size();i++)
-			  // 	cout<<lines[i]<<endl;
-			   //fin.close();
-			  // if(find(lines.begin(),lines.end(),user_input) != lines.end())
-			  //    {	
-			  //    	auto ite=find(lines.begin(),lines.end(),user_input);
-			  //    	string to_split = *ite;
-			  //    	//cout<<to_split<<"spli\n";
-			  //    	vt =split_word(to_split);
-			  //    	k=0;
-			  //    	for(i=2;i<vt.size();i++)
-			  //    	{
-			  //    		arg[k++]=(char*)vt[i].c_str();
-			  //    	}
-			  //    	arg[k]=NULL;
-			  //    	execvp(arg[0],arg);
-			  //    }
+			
 			 exit(1);
 
+		}
+		else if(user_input=="sudo su")
+		{
+			re =setenv("PS1","#",1);
+			arg[0]=(char*)v[0].c_str();
+			arg[1]=(char*)v[1].c_str();
+			arg[2]=NULL;
+			execvp(arg[0],arg);
+		}
+		else if( user_input=="su root")
+		{
+			re =setenv("PS1","#",1);
+			//cout<<"in child sttng\n";
+			arg[0]=(char*)v[0].c_str();
+			arg[1]=(char*)v[1].c_str();
+			arg[2]=NULL;
+			execvp(arg[0],arg);
 		}
 
 		else if(find(v.begin(),v.end(),st5)!=v.end())
@@ -170,34 +193,35 @@ int main()
 		/**********************MAKE TO BCKGRND****************/
 		else if(find(v.begin(),v.end(),st3) !=v.end())
 		{
-			// shmID = shmget(IPC_PRIVATE, 2*sizeof(int), 0666);
-			// shmPTR = (int *) shmat(shmID, NULL, 0);
-
-			// shmPTR[0]=1;
+			
 			to_background(v);
 		}
 
 		/**********************HANDLING CD********************/
-		else if(v[0]==cd)
-		{
-			//cout<<"cd hndl\n";
-			string homepath="";
-			char pathnam[1000];
-			if(v[1]==st7)
-			{
-				homepath ="/home/user";
-				pth=(char*)homepath.c_str();
+		// else if(v[0]==cd)
+		// {									/**************cd /home/user/Desktop**********************/
 
-			}
-			else
-			{	
-			 pth = (char*)v[1].c_str();
-			}
-			int r=chdir(pth);
-			printf("%s\n", getcwd(pathnam, 1000));
-			//exit(1);
 			
-		}
+		// 	string homepath="";
+		// 	char pathnam[1000];
+		// 	if(v[1]==st7)
+		// 	{
+		// 		homepath ="/home/user";
+		// 		pth=(char*)homepath.c_str();
+
+		// 	}
+		// 	else
+		// 	{	
+		// 	 pth = (char*)v[1].c_str();
+		// 	 cout<<pth<<"pth set to\n";
+		// 	}
+		// 	int r=chdir(pth);
+		// 	if(r==-1)
+		// 		cout<<"ERR settng directry\n";
+		// 	printf("%s\n", getcwd(pathnam, 1000));
+		// 	exit(1);
+			
+		// }
 		/*********************PIPE COMMANDS********************************/
 		else if(find(v.begin(),v.end(),st2) != v.end())
 			pipeimpl(v);
@@ -253,12 +277,8 @@ int main()
 			   while (fin)
 			   { 
 			    getline(fin, lin);
-			    //cout<<lin<<"frm file"<<endl;
 			    vt1=split_word(lin);
-			    //cout<< vt1[0]<<endl;
-			    //cout<<vt1[1]<<endl;
-			   //line.push_back(lin);
-			  // cout<<lin<<endl;
+			    
 			     
 			     flgg=0;
 			    
@@ -266,7 +286,7 @@ int main()
 			    	{
 			    		flgg=1;
 			    		break;
-			    		//cout<<"same\n";
+			    		
 			    	}
 			    
 			   
@@ -285,42 +305,8 @@ int main()
 			    execvp(arg1[0],arg1);
 			    }
 			   
-			  // for(i=0;i<line.size();i++)
-			     //{
-			   	  //cout<<line[i]<<"opp"<<endl;
-			   	  // string to_split = line[i];
-			       // vector<string> vt1=split_word(to_split);
-			    	 // cout<< vt1[0]<<"spi";
-			    	 // for(j=0;j<vt1.size();j++)
-			    	 // {
-			    	 // 	//cout<<vt1[j]<<" ";
-			    	 // 	//cout<<user_input<<"usrin";
-			    	 // 	user_input+='\0';
-			    	 // 	 if(vt1[1]==user_input)
-			    	 // 	 {
-			   	 	// 		flgg=1;
-			   	 	// 		//cout<<"her";
-			   	 	// 		vt2=vt1;
-			   	 	// 		break;
-			   	 	// 	    }
-			   	 	//}
-			    	// if(flgg==1)
-			    	 //	break;
-			  //  }
-			 //    if(flgg==1)
-			 //    {
-				//     k=0;
-				//    for( i=2;i<vt2.size();i++)
-				// 	{
-				// 		//cout<<vt2[i];
-				// 		//cout<<"he";
-				// 	  arg1[k]=(char*)vt2[i].c_str();
-				// 	//cout<<arg[k]<<endl;
-				// 	 k++;
-				// 	}
-				// 	 arg1[k]=NULL;
-				// 	 execvp(arg1[0],arg1);
-				// }
+			  
+				
 			/************************************BASIC**************************************/
 
 			for( i=0;i<v1.size();i++)
@@ -348,13 +334,13 @@ int main()
 
 	else if( pid > 0)
 	{
-		//if(!back_flg)
-		 r =wait(&chidprocstatus);
-		//  if(shmPTR[0]==0)
-		//   r =wait(&chidprocstatus);
-		// shmdt((void *) shmPTR);
-		// shmctl(shmID, IPC_RMID, NULL);//deleted shrd my
-		
+		if(back_flg==0)
+		{
+		  r =wait(&chidprocstatus);
+		  cout<<"prnt waits\n";
+		}
+
+		cout<<getenv("PS1")<<" ";
 
 	}
 
