@@ -92,6 +92,21 @@ int main()
       root_set=0;
       
     }
+    if(user_input =="cd ~")
+    {
+    	chdir("/home/user/os_assign/2019201024_OSassign_1");
+    }
+    if(user_input =="cd .")
+    {
+    	chdir(".");
+    }
+
+    if(user_input =="cd ..")
+    {
+    	
+    	chdir("..");
+
+    }
 
     // if(user_input=="cd ..")
 		// {									/**************cd /home/user/Desktop**********************/
@@ -169,6 +184,22 @@ int main()
 			
 			 exit(1);
 
+		}
+		else if(user_input=="cd ~")
+		{
+			exit(1);
+		}
+		else if(user_input=="cd ..")
+		{
+			exit(1);
+		}
+		else if(user_input=="cd .")
+		{
+			exit(1);
+		}
+		else if(user_input=="exit")
+		{
+			exit(1);
 		}
 		else if(user_input=="sudo su")
 		{
