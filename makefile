@@ -14,7 +14,7 @@ make_background.o:make_background.cpp make_background.h
 alarmset.o:alarmset.cpp alarmset.h
 	g++ -c alarmset.cpp	
 
-myshell.o: myshell.cpp intial.cpp splitwrd.cpp make_background.cpp
+myshell.o: myshell.cpp intial.cpp splitwrd.cpp make_background.cpp alarmset.o
 	g++ -c myshell.cpp
 
 clean:

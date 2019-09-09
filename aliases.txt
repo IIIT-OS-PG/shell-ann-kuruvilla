@@ -1,0 +1,4 @@
+alias ab cal
+alias ll ls
+alias listl ls -l
+alias present pwd

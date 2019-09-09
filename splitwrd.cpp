@@ -15,6 +15,7 @@ vector<string> split_word(string s)
 {
 	//string st ="<<";
 	//st+='\0';
+	
 	vector<string> wrds;
 	int i,l;
 	l=s.size();

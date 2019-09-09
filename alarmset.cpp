@@ -29,7 +29,9 @@ void setalarm(vector<string> ve)
 		int i,siz,ho,mi,se;
 		siz = ve.size();
 		 msg = ve[siz-1];
+
 		string h=ve[1];
+		//cout<<h<<"val of h"<<endl;
 		ho=(h[0]-'0')*10 + (h[1]-'0');
 		mi = (h[3]-'0')*10 + (h[4]-'0');
 		se = (h[6]-'0')*10 +(h[7]-'0');

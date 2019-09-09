@@ -24,8 +24,8 @@ void to_background(vector<string> ve)
 				argss[i]=(char*)ve[i].c_str();
 				//cout<<arg[i]<<endl;
 			}
-			argss[i]=NULL;
-		r=setsid();
+			  argss[i]=NULL;
+		      r=setsid();
 		//cout<<"r"<<"hello";
 
 		
